@@ -1,7 +1,8 @@
 let latestProjectID = 1044366956;
 
 function getLatestProjectID() {
-  return fetch(`https://api.scratch.mit.edu/explore/projects?limit=1&offset=0&language=en&mode=recent&q=*`)
+  const url = 'https://corsproxy.io/?' + encodeURIComponent('https://api.scratch.mit.edu/explore/projects?limit=1&offset=0&language=en&mode=recent&q=*');
+  return fetch(url)
     .then(response => {
       if (response.ok) {
         return response.json();
