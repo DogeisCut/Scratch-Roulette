@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+    <meta charset="utf-8" />
+    <title>Scratch Roulette</title>
+    <meta name="application-name" content="Scratch Roulette" />
+    <meta name="apple-mobile-web-app-title" content="Scratch Roulette">
+	  <meta name="description" content="Scratch Roulette is an online app for viewing random scratch projects at the click of a button." />
+    <meta name="keywords" content="funny, scratch, games, game, animation, animations" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#ff6f00" />
+    <meta name="msapplication-TileColor" content="#ff6f00" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon_32.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        height: 100vh;
+      }
+      #project-info {
+        width: 30%;
+        padding: 20px;
+        background: #f0f0f0;
+        overflow-y: auto;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      }
+      #project-info h1 {
+        color: #0056b3;
+      }
+      #project-info h3 {
+        color: #2261a5;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th, td {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        color: #ff6f00;
+      }
+      iframe {
+        width: 70%;
+        height: 100%;
+        border: none;
+        display: block;
+      }
+      #loading-screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.8);
+        display: none;
+        z-index: 999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #author-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .loading-icon {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #0056b3;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      #find-project-button {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        width: calc(30% - 40px);
+        height: 50px;
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #find-project-button:hover {
+        background-color: #004494;
+      }
+      #find-project-button:active {
+        background-color: #003366;
+      }
+      #find-project-button img {
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="project-info">
+      <h1>Project Info</h1>
+      <h3>Main Info</h3>
+      <table>
+        <tr>
+          <th>Project Link</th>
+          <td id="project-link"></td>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <td id="project-name"></td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td id="project-description"></td>
+        </tr>
+        <tr>
+          <th>Instructions</th>
+          <td id="project-instructions"></td>
+        </tr>
+      </table>
+      <h3>Author Info</h3>
+      <table>
+        <tr>
+          <th>Author</th>
+          <td id="project-author">
+            <div id="author-box">
+              <a id="project-author-link" href="" target="_blank">
+                <img id="project-author-image" src="">
+                <div id="project-author-text"></div>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <!--
+        <tr>
+          <th>Join Date</th>
+          <td id="project-author-joined"></td>
+        </tr>
+        <tr>
+          <th>Part of Scratch Team</th>
+          <td id="project-author-st"></td>
+        </tr>
+        -->
+      </table>
+      <h3>Dates</h3>
+      <table>
+        <tr>
+          <th>Creation Date</th>
+          <td id="project-created"></td>
+        </tr>
+        <tr>
+          <th>Last Modified</th>
+          <td id="project-modified"></td>
+        </tr>
+        <tr>
+          <th>Shared Dated</th>
+          <td id="project-shared"></td>
+        </tr>
+      </table>
+      <h3>Stats</h3>
+      <table>
+        <tr>
+          <th>Views</th>
+          <td id="project-views"></td>
+        </tr>
+        <tr>
+          <th>Loves</th>
+          <td id="project-loves"></td>
+        </tr>
+        <tr>
+          <th>Favorites</th>
+          <td id="project-favorites"></td>
+        </tr>
+        <tr>
+          <th>Remixes</th>
+          <td id="project-remixes"></td>
+        </tr>
+      </table>
+      <h3>Metadata</h3>
+      <table>
+        <tr>
+          <th>Comments Enabled</th>
+          <td id="project-meta-comments"></td>
+        </tr>
+      </table>
+      <h3>Remix Info</h3>
+      <table>
+        <tr>
+          <th>Remix of</th>
+          <td id="project-remixof"></td>
+        </tr>
+        <tr>
+          <th>Root Project</th>
+          <td id="project-root"></td>
+        </tr>
+      </table>
+      <h3>Images</h3>
+      <table>
+        <tr>
+          <th>Thumbnail</th>
+          <td id="project-thumbnail">
+            <img id="project-thumbnail-image" src="">
+          </td>
+        </tr>
+      </table>
+    </div>
+    <iframe id="scratch-project" allowtransparency="true" frameborder="0" scrolling="no" allowfullscreen></iframe>
+    <div id="loading-screen" style="display: none;">
+      <div class="loading-icon"></div>
+    </div>
+    <button id="find-project-button">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/synchronize.png" alt="swirl icon" width="24" height="24" />
+      Find a Random Project
+    </button>
+    <script src="script.js"></script>
+  </body>
+</html>
