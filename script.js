@@ -46,7 +46,7 @@ function getRandomProject() {
 
         document.getElementById("project-link").innerHTML = `<a href="https://scratch.mit.edu/projects/${projectId}" target="_blank">${projectId}</a>`;
         document.getElementById("project-name").textContent = data.title;
-        document.getElementById("project-author-text").innerHTML = `<a href="https://scratch.mit.edu/users/${data.author.username}" target="_blank">${data.author.username}</a>`;
+        document.getElementById("project-author-text").textContent = data.author.username;
         document.getElementById("project-author-link").href = `https://scratch.mit.edu/users/${data.author.username}`
         document.getElementById("project-author-image").src = data.author.profile.images["90x90"]
         //document.getElementById("project-author-joined").textContent = formatDate(data.author.history.joined)
