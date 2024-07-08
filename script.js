@@ -1,7 +1,8 @@
-let latestProjectID = 1044366956;
+let latestProjectID = 1044366956; // Default value.
+let projectHistory = [];
 
 function getLatestProjectID() {
-  const url = 'https://corsproxy.io/?' + encodeURIComponent('https://api.scratch.mit.edu/explore/projects?limit=1&offset=0&language=en&mode=recent&q=*');
+  const url = 'https://corsproxy.io/?' + encodeURIComponent('https://api.scratch.mit.edu/explore/projects?limit=1&offset=0&mode=recent&q=*');
   return fetch(url)
     .then(response => {
       if (response.ok) {
@@ -12,7 +13,7 @@ function getLatestProjectID() {
     })
     .then(data => {
       if (data && data[0] && data[0].id) {
-        latestProjectID = data[0].id; // Set the latest project ID
+        latestProjectID = data[0].id;
       }
     })
     .catch(error => {
@@ -26,30 +27,27 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 
-function getRandomProject() {
-  document.getElementById("loading-screen").style.display = "flex";
-  //document.getElementById("scratch-project").style.display = "none";
-
-  let projectId = Math.floor(Math.random() * latestProjectID);
-
+function initProjectFromId(projectId) {
   fetch(`https://trampoline.turbowarp.org/proxy/projects/${projectId}`)
     .then(response => {
       if (response.ok) {
         return response.json();
       } else {
-        throw new Error('Project not found');
+        throw new Error('Project not found'); // turning this off bc it's annoying
       }
     })
     .then(data => {
       if (data && data.id) {
+        projectHistory.push(data)
         document.getElementById("scratch-project").src = `https://turbowarp.org/${projectId}/embed?addons=remove-curved-stage-border,pause,vol-slider,clones`;
+        console.log("Loading project:", projectId, data.title)
 
         document.getElementById("project-link").innerHTML = `<a href="https://scratch.mit.edu/projects/${projectId}" target="_blank">${projectId}</a>`;
         document.getElementById("project-name").textContent = data.title;
         document.getElementById("project-author-text").textContent = data.author.username;
         document.getElementById("project-author-link").href = `https://scratch.mit.edu/users/${data.author.username}`
         document.getElementById("project-author-image").src = data.author.profile.images["90x90"]
-        //document.getElementById("project-author-joined").textContent = formatDate(data.author.history.joined)
+        //document.getElementById("project-author-joined").textContent = formatDate(data.author.history.joined) // broken on scratch's end
         //document.getElementById("project-author-st").textContent = data.author.scratchteam
         document.getElementById("project-description").textContent = data.description;
         document.getElementById("project-instructions").textContent = data.instructions;
@@ -71,15 +69,30 @@ function getRandomProject() {
         document.getElementById("project-remixof").innerHTML = `<a href="https://scratch.mit.edu/projects/${data.remix.parent}" target="_blank">${data.remix.parent}</a>`;
         document.getElementById("project-root").innerHTML = `<a href="https://scratch.mit.edu/projects/${data.remix.root}" target="_blank">${data.remix.root}</a>`;
 
+        if (data.remix.root == null) {
+          document.getElementById("remix-info-container").style.display = "none";
+        } else {
+          document.getElementById("remix-info-container").style.display = "block";
+        }
+
         document.getElementById("project-thumbnail-image").src = data.images["282x218"]
       } else {
         setTimeout(getRandomProject, 100);
       }
     })
     .catch(error => {
-      console.error(error);
+      //console.error(error); // turning this off bc it's annoying
       setTimeout(getRandomProject, 100);
     });
+}
+
+function getRandomProject() {
+  document.getElementById("loading-screen").style.display = "flex";
+  //document.getElementById("scratch-project").style.display = "none";
+
+  let projectId = Math.floor(Math.random() * latestProjectID);
+
+  initProjectFromId(projectId)  
 }
 
 document.getElementById("find-project-button").addEventListener("click", getRandomProject);
@@ -88,3 +101,10 @@ function formatDate(isoDate) {
   const date = new Date(isoDate);
   return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 }
+
+// window.onpopstate = function(event) {
+//   const url = document.getElementById("scratch-project").src
+//   const regex = /\/(\d+)\//;
+//   const match = url.match(regex)[1];
+//   initProjectFromId(match)
+// };
