@@ -30,7 +30,7 @@ function getRandomProject() {
   document.getElementById("loading-screen").style.display = "flex";
   //document.getElementById("scratch-project").style.display = "none";
 
-  let projectId = Math.floor(Math.random() * 1044366956);
+  let projectId = Math.floor(Math.random() * latestProjectID);
 
   fetch(`https://trampoline.turbowarp.org/proxy/projects/${projectId}`)
     .then(response => {
