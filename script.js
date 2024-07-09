@@ -1,6 +1,8 @@
 let latestProjectID = 1044366956; // Default value.
 let projectHistory = [];
 
+let randId = 0;
+
 function getLatestProjectID() {
   const url = 'https://corsproxy.io/?' + encodeURIComponent('https://api.scratch.mit.edu/explore/projects?limit=1&offset=0&mode=recent&q=*');
   return fetch(url)
@@ -13,7 +15,7 @@ function getLatestProjectID() {
     })
     .then(data => {
       if (data && data[0] && data[0].id) {
-        latestProjectID = data[0].id;
+        latestProjectID = data[0].id - 1; // subtracting the latest ID by 1 is a failsafe.
       }
     })
     .catch(error => {
@@ -28,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function initProjectFromId(projectId) {
+  randId = projectId
   fetch(`https://trampoline.turbowarp.org/proxy/projects/${projectId}`)
     .then(response => {
       if (response.ok) {
@@ -77,12 +80,12 @@ function initProjectFromId(projectId) {
 
         document.getElementById("project-thumbnail-image").src = data.images["282x218"]
       } else {
-        setTimeout(getRandomProject, 100);
+        setTimeout(tryAgain, 100);
       }
     })
     .catch(error => {
       //console.error(error); // turning this off bc it's annoying
-      setTimeout(getRandomProject, 100);
+      setTimeout(tryAgain, 100);
     });
 }
 
@@ -90,9 +93,18 @@ function getRandomProject() {
   document.getElementById("loading-screen").style.display = "flex";
   //document.getElementById("scratch-project").style.display = "none";
 
-  let projectId = Math.floor(Math.random() * latestProjectID);
+  randId = Math.floor(Math.random() * latestProjectID);
 
-  initProjectFromId(projectId)  
+  initProjectFromId(randId)  
+}
+
+function tryAgain() {
+  document.getElementById("loading-screen").style.display = "flex";
+  //document.getElementById("scratch-project").style.display = "none";
+
+  randId += 1;
+
+  initProjectFromId(randId);
 }
 
 document.getElementById("find-project-button").addEventListener("click", getRandomProject);
