@@ -146,12 +146,22 @@
       ::-webkit-scrollbar-thumb:hover {
         background-color: #e65c00;
       }
+
+      #footer {
+        border-radius: 5px;
+        bottom: 0;
+        left: 0;
+        background: #ff6f00;
+        color: white;
+        text-align: center;
+        padding: 10px;
+      }
     </style>
   </head>
   <body>
     <div id="project-info">
       <img id="logo" src="ScratchRouletteLogo.svg" alt="Scratch Roulette Logo" width="408px">
-      <p id="version-number">v1.0.4</p>
+      <p id="version-number">v1.0.5</p>
       <hr>
       <h1>Project Info</h1>
       <h3>Main Info</h3>
@@ -260,15 +270,30 @@
           </td>
         </tr>
       </table>
+      <br>
+      <h1>Footer</h1>
+      <div id="footer">
+        Scratch Roulette is not affiliated with Scratch, the Scratch Team, or the Scratch Foundation.<br><br>
+        Scratch is a project of the Scratch Foundation. It is available for free at <a href="https://scratch.org/" target="_blank" style="color: #ffffff; text-decoration: underline;">https://scratch.org/</a>.  
+      </div>
+      <br>
+      <br>
+      <br>  
+      <br>
+      <!--pro html dev-->
+      <br>
+      <br>
     </div>
     <iframe id="scratch-project" allowtransparency="true" frameborder="0" scrolling="no" allowfullscreen></iframe>
     <div id="loading-screen" style="display: none;">
       <div class="loading-icon"></div>
     </div>
-    <button id="find-project-button">
-      <img src="https://img.icons8.com/ios-filled/50/ffffff/synchronize.png" alt="swirl icon" width="24" height="24" />
-      Find a Random Project
-    </button>
+    <div id="buttons-container">
+      <button id="find-project-button">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/synchronize.png" alt="swirl icon" width="24" height="24" />
+        Find a Random Project
+      </button>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
