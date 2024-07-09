@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+    <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
     <meta charset="utf-8" />
     <title>Scratch Roulette</title>
     <meta name="application-name" content="Scratch Roulette" />
@@ -13,11 +13,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#ff6f00" />
     <meta name="msapplication-TileColor" content="#ff6f00" />
-    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <meta name="msapplication-config" content="browserconfig.xml" />
     <meta name="format-detection" content="telephone=no" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/icon_32.png" />
-    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -37,7 +37,7 @@
         color: #0056b3;
       }
       #project-info h3 {
-        color: #2261a5;
+        color: #0056b3;
       }
       table {
         width: 100%;
@@ -47,6 +47,10 @@
         text-align: left;
         padding: 8px;
         border-bottom: 1px solid #ddd;
+      }
+      hr {
+        border: none;
+        border-top: 1px solid #ddd;
       }
       th {
         color: #ff6f00;
@@ -112,10 +116,34 @@
       #find-project-button img {
         margin-right: 10px;
       }
+      #logo {
+        display: block;
+        margin: 0 auto;
+      }
+
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #e0e0e0;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background-color: #ff6f00;
+        border-radius: 10px;
+        border: 3px solid #e0e0e0;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #e65c00;
+      }
     </style>
   </head>
   <body>
     <div id="project-info">
+      <img id="logo" src="ScratchRouletteLogo.svg" alt="Scratch Roulette Logo" width="408px">
+      <hr>
       <h1>Project Info</h1>
       <h3>Main Info</h3>
       <table>
